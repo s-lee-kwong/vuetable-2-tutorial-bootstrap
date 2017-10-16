@@ -2,17 +2,17 @@
   <div class="container">
     <filter-bar></filter-bar>
     <vuetable ref="vuetable"
-      api-url="https://vuetable.ratiw.net/api/users"
       :fields="fields"
       :css="css"
       pagination-path=""
-      :per-page="10"
+      :per-page="5"
       :multi-sort="true"
-      multi-sort-key="ctrl"
+      multi-sort-key="shift"
       :sort-order="sortOrder"
       detail-row-component="my-detail-row"
       :append-params="moreParams"
       :render-icon="renderIcon"
+      @vuetable:loaded="loaded"
       @vuetable:cell-clicked="onCellClicked"
       @vuetable:pagination-data="onPaginationData"
     >
@@ -52,6 +52,7 @@ import VuetablePagination from 'vuetable-2/src/components/VuetablePagination'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
 import accounting from 'accounting'
 import moment from 'moment'
+import filter from './filter.js'
 import Vue from 'vue'
 import FieldDef from './field-def.js'
 import BootstrapStyle from './bootstrap-css.js'
@@ -82,7 +83,17 @@ export default {
           direction: 'asc'
         }
       ],
-      moreParams: {}
+      moreParams: {},
+      localData: [
+        {name: "Test", email: "Test1", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "M", salary: "343434"},
+        {name: "Test", email: "Test2", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "M", salary: "343434"},
+        {name: "Test", email: "Test5", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "M", salary: "343434"},
+        {name: "Test", email: "Test4", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "M", salary: "343434"},
+        {name: "Test", email: "Test3", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "F", salary: "343434"},
+        {name: "Test", email: "Test0", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "F", salary: "343434"},
+        {name: "Test", email: "Test9", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "F", salary: "343434"},
+      ],
+      filteredData: []
   	}
   },
   mounted () {
@@ -90,6 +101,29 @@ export default {
     this.$events.listen('filter-reset', () => this.onFilterReset())
   },
   methods: {
+    loaded () {
+      let queryParams = this.$refs.vuetable.getAllQueryParams()
+
+      console.log(this.moreParams)
+
+      queryParams.filter = this.moreParams.filter
+
+      let primeQuery = queryParams["sort"].split("|")[0]
+
+      this.filteredData = filter(queryParams, this.localData)
+
+      this.$refs.vuetable.tablePagination = {
+            total: 200,
+            per_page: 5,
+            current_page: this.$refs.vuetable.currentPage,
+            last_page: 2,
+            from: 1,
+            to: 2
+      }
+
+      this.$refs.vuetable.fireEvent('pagination-data', this.$refs.vuetable.tablePagination)
+      this.$refs.vuetable.tableData = this.filteredData
+    },
     renderIcon (classes, options) {
       return `<span class="${classes.join(' ')}"></span>`
     },
@@ -115,24 +149,28 @@ export default {
     },
     onChangePage (page) {
       this.$refs.vuetable.changePage(page)
+
+      console.log("CHANGE PAGE" + page)
     },
     onCellClicked (data, field, event) {
       console.log('cellClicked: ', field.name)
       this.$refs.vuetable.toggleDetailRow(data.id)
     },
     onAction (action, data, index) {
-        console.log('custom-actions: ' + action, data.name, index)
+      console.log('custom-actions: ' + action, data.name, index)
     },
     onFilterSet (filterText) {
       this.moreParams = {
         'filter': filterText
       }
-      Vue.nextTick( () => this.$refs.vuetable.refresh())
+
+      this.loaded()
     },
     onFilterReset () {
       this.moreParams = {}
       this.$refs.vuetable.refresh()
-      Vue.nextTick( () => this.$refs.vuetable.refresh())
+
+      this.loaded()
     }
   },
 }
