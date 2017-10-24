@@ -60,7 +60,8 @@ export default function filter(query, data) {
   const res = {
     rows: sliced,
     from: offset + 1,
-    to: to
+    to: to,
+    total: rows.length
   }
 
   const consoleGroupName = 'Mock data - ' + moment().format('YYYY-MM-DD HH:mm:ss')

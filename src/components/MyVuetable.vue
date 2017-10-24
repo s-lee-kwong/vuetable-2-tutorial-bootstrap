@@ -118,10 +118,10 @@ export default {
       this.filteredData = filter(queryParams, this.localData)
 
       this.$refs.vuetable.tablePagination = {
-            total: this.localData.length,
+            total: this.filteredData.total,
             per_page: this.pageAmount,
             current_page: this.$refs.vuetable.currentPage,
-            last_page: Math.ceil(this.localData.length / this.pageAmount),
+            last_page: Math.ceil(this.filteredData.total / this.pageAmount),
             from: this.filteredData.from,
             to: this.filteredData.to
       }
