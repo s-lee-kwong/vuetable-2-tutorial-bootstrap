@@ -100,7 +100,7 @@ export default {
         {id: 7, name: "Test", email: "Test9", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "F", salary: "343434"},
         {id: 8, name: "Test", email: "Test8", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "F", salary: "343431114"},
       ],
-      filteredData: []
+      filteredData: {}
   	}
   },
   mounted () {
