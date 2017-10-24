@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <my-vuetable></my-vuetable>
+    <my-vuetable :pageAmount="pageAmount"></my-vuetable>
   </div>
 </template>
 
@@ -10,6 +10,11 @@ import MyVuetable from './components/MyVuetable'
 
 export default {
   name: 'app',
+  data() {
+    return {
+      pageAmount: 6
+    }
+  },
   components: {
     MyVuetable
   }

@@ -11,7 +11,7 @@ const purify = o => JSON.parse(JSON.stringify(o)) // purify data
  */
 export default function filter(query, data) {
   query = purify(query)
-  var { limit = 10, offset = 0, sort = '', order = '' } = query
+  var { per_page = 10, page = 0, sort = '', order = '' } = query
 
   sort = query["sort"].split("|")[0]
   order = query["sort"].split("|")[1]
@@ -49,14 +49,18 @@ export default function filter(query, data) {
     rows = orderBy(rows, sort, order)
   }
 
+  let offset = (page - 1) * per_page
+  let sliced = rows.slice(offset, offset + per_page)
+  let to = offset + per_page
+
+  if (sliced.length != per_page) {
+    to = rows.length
+  }
+
   const res = {
-    rows: rows.slice(offset, offset + limit),
-    total: rows.length,
-    summary: {
-      uid: rows.length,
-      age: rows.length && ~~(rows.map(({ age }) => age).reduce((sum, cur) => sum + cur) / rows.length), // average age
-      country: uniq(rows.map(({ country }) => country)).length
-    }
+    rows: sliced,
+    from: offset + 1,
+    to: to
   }
 
   const consoleGroupName = 'Mock data - ' + moment().format('YYYY-MM-DD HH:mm:ss')
@@ -67,5 +71,5 @@ export default function filter(query, data) {
     console.groupEnd(consoleGroupName)
   }, 0)
   // return Promise.resolve(data)
-  return rows
+  return res
 }

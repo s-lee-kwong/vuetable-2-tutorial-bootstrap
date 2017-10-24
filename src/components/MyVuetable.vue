@@ -5,7 +5,7 @@
       :fields="fields"
       :css="css"
       pagination-path=""
-      :per-page="5"
+      :per-page="pageAmount"
       :multi-sort="true"
       multi-sort-key="shift"
       :sort-order="sortOrder"
@@ -72,6 +72,12 @@ export default {
     VuetablePaginationInfo,
     FilterBar
   },
+  props: {
+    pageAmount: {
+      type: Number,
+      default: 2
+    }
+  },
   data () {
   	return {
       css: BootstrapStyle,
@@ -92,6 +98,7 @@ export default {
         {name: "Test", email: "Test3", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "F", salary: "343434"},
         {name: "Test", email: "Test0", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "F", salary: "343434"},
         {name: "Test", email: "Test9", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "F", salary: "343434"},
+        {name: "Test", email: "Test8", age: 25, birthdate: "09-09-1991", nickname: "Blah", gender: "F", salary: "343431114"},
       ],
       filteredData: []
   	}
@@ -104,8 +111,6 @@ export default {
     loaded () {
       let queryParams = this.$refs.vuetable.getAllQueryParams()
 
-      console.log(this.moreParams)
-
       queryParams.filter = this.moreParams.filter
 
       let primeQuery = queryParams["sort"].split("|")[0]
@@ -113,16 +118,16 @@ export default {
       this.filteredData = filter(queryParams, this.localData)
 
       this.$refs.vuetable.tablePagination = {
-            total: 200,
-            per_page: 5,
+            total: this.localData.length,
+            per_page: this.pageAmount,
             current_page: this.$refs.vuetable.currentPage,
-            last_page: 2,
-            from: 1,
-            to: 2
+            last_page: Math.ceil(this.localData.length / this.pageAmount),
+            from: this.filteredData.from,
+            to: this.filteredData.to
       }
 
       this.$refs.vuetable.fireEvent('pagination-data', this.$refs.vuetable.tablePagination)
-      this.$refs.vuetable.tableData = this.filteredData
+      this.$refs.vuetable.tableData = this.filteredData.rows
     },
     renderIcon (classes, options) {
       return `<span class="${classes.join(' ')}"></span>`
