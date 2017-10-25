@@ -3767,7 +3767,7 @@ vue@^2.5.2:
 
 "vuetable-2@https://github.com/EDataNow/vuetable-2.git":
   version "1.6.6"
-  resolved "https://github.com/EDataNow/vuetable-2.git#599841c24f53a227d535886ce09b0f42ebaba043"
+  resolved "https://github.com/EDataNow/vuetable-2.git#b2122e2cbe582f61933f520d09de8e0b103f250f"
   dependencies:
     axios "^0.15.3"
 
