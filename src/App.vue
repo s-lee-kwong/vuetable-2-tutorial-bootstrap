@@ -7,6 +7,7 @@
 
 <script>
 import MyVuetable from './components/MyVuetable'
+import Backup from './components/Backup'
 
 export default {
   name: 'app',
@@ -16,7 +17,8 @@ export default {
     }
   },
   components: {
-    MyVuetable
+    MyVuetable,
+    Backup
   }
 }
 </script>
