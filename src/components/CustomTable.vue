@@ -15,6 +15,7 @@
       @vuetable:loaded="loaded"
       @vuetable:cell-clicked="onCellClicked"
       @vuetable:pagination-data="onPaginationData"
+      :grouped="dataGrouped"
     >
       <template slot="actions" scope="props">
         <div class="custom-actions">
@@ -105,6 +106,10 @@ export default {
     multiSort: {
       type: Boolean,
       default: true
+    },
+    dataGrouped: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -133,12 +138,12 @@ export default {
   },
   methods: {
     loaded () {
-      console.log(this.$refs)
       let vuetableRef = this.$refs[this.passRef]
 
       let queryParams = vuetableRef.getAllQueryParams()
 
       queryParams.filter = this.moreParams.filter
+      queryParams.grouped = this.dataGrouped
 
       let primeQuery = queryParams["sort"].split("|")[0]
 
@@ -154,6 +159,7 @@ export default {
       }
 
       vuetableRef.fireEvent('pagination-data', vuetableRef.tablePagination)
+
       vuetableRef.tableData = this.filteredData.rows
     },
     renderIcon (classes, options) {

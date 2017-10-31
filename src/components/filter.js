@@ -1,6 +1,9 @@
 import moment from 'moment'
 import uniq from 'lodash/uniq'
 import orderBy from 'lodash/orderBy'
+import groupBy from 'lodash/groupBy'
+import flattenDeep from 'lodash/flattenDeep'
+
 const typeOf = o => Object.prototype.toString.call(o).slice(8, -1).toLowerCase()
 const purify = o => JSON.parse(JSON.stringify(o)) // purify data
 
@@ -11,12 +14,27 @@ const purify = o => JSON.parse(JSON.stringify(o)) // purify data
  */
 export default function filter(query, data) {
   query = purify(query)
-  var { per_page = 10, page = 0, sort = '', order = '' } = query
+  var { per_page = 10, page = 0, sort = '', order = '', grouped = false } = query
 
-  sort = query["sort"].split("|")[0]
-  order = query["sort"].split("|")[1]
+  let sorts = query["sort"].split(",")
+  let allSorts = []
+  let allOrders = []
+
+  sorts.forEach((sortString) => {
+    let sortSplitArray = sortString.split("|")
+
+    allSorts.push(sortSplitArray[0])
+    allOrders.push(sortSplitArray[1])
+  })
+
+  sort = allSorts
+  order = allOrders
 
   let rows = data;
+
+  if (grouped) {
+    rows = flattenDeep(rows.map((object) => { return object.data }))
+  }
 
   // custom query conditions
   let filteredAlready = false;
@@ -55,6 +73,17 @@ export default function filter(query, data) {
 
   if (sliced.length != per_page) {
     to = rows.length
+  }
+
+  if (grouped) {
+    sliced = _.compact(_.chain(sliced).groupBy("grouping").map((v, i) => {
+          if (i != "undefined") {
+            return {
+              groupName: i,
+              data: v
+            }
+          }
+        }).value())
   }
 
   const res = {

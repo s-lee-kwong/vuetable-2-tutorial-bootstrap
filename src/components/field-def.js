@@ -17,7 +17,7 @@ export default [
   },
   {
     name: 'age',
-    sortField: 'birthdate',
+    sortField: 'age',
     dataClass: 'text-center'
   },
   {

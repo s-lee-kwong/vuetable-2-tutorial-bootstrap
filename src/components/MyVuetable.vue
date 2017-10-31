@@ -1,9 +1,15 @@
 <template>
   <div class="container">
-    <custom-table :pageAmount="pageAmount" :hasSearch="true"
+    <custom-table v-if="!isGrouped" :pageAmount="pageAmount" :hasSearch="true"
           :hasPagination="true" :passedData="localData"
           :fieldsDef="fields" :defaultSortOrder="sortOrder"
           :css="css" :detailComponent="detailComponent">
+    </custom-table>
+
+    <custom-table v-if='isGrouped' :pageAmount="pageAmount" :hasSearch="true"
+          :hasPagination="true" :passedData="localGroupedData"
+          :fieldsDef="fields" :defaultSortOrder="sortOrder"
+          :css="css" :detailComponent="detailComponent" :dataGrouped="true">
     </custom-table>
 
     <custom-table v-if='showBoth' passRef="custom-table-2" :pageAmount="pageAmount" :hasSearch="false"
@@ -23,6 +29,10 @@ import DetailRow from './DetailRow'
 import CustomActions from './CustomActions'
 import CustomTable from './CustomTable'
 import Data from './data.js'
+import GroupedData from './groupedData.js'
+import lodash from 'lodash';
+
+Object.defineProperty(Vue.prototype, '$lodash', { value: lodash });
 
 Vue.component('my-detail-row', DetailRow)
 Vue.component('custom-actions', CustomActions)
@@ -39,6 +49,7 @@ export default {
       css: BootstrapStyle,
       fields: FieldDef,
       fields2: FieldDef2,
+      isGrouped: true,
       sortOrder: [
         {
           field: 'email',
@@ -55,6 +66,7 @@ export default {
       ],
       pageAmount: 6,
       localData: Data,
+      localGroupedData: GroupedData,
       filteredData: {},
       detailComponent: 'my-detail-row'
   	}
