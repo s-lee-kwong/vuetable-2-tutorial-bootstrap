@@ -14,6 +14,7 @@ export default [
     name: 'email',
     title: '<span class="glyphicon glyphicon-envelope"></span> Email Address',
     sortField: 'email'
+    // componentHeaderName: "custom-actions"
   },
   {
     name: 'age',

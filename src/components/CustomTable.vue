@@ -17,7 +17,7 @@
       @vuetable:pagination-data="onPaginationData"
       :grouped="dataGrouped"
     >
-      <template slot="actions" scope="props">
+      <template slot="actions" slot-scope="props">
         <div class="custom-actions">
           <button class="btn btn-default btn-sm"
             @click="onAction('view-item', props.rowData, props.rowIndex)">
@@ -116,7 +116,8 @@ export default {
     return {
       moreParams: {},
       localData: [],
-      filteredData: {}
+      filteredData: {},
+      slotShown: true
     }
   },
   mounted () {
@@ -161,6 +162,12 @@ export default {
       vuetableRef.fireEvent('pagination-data', vuetableRef.tablePagination)
 
       vuetableRef.tableData = this.filteredData.rows
+
+      // var stuff = this.$refs.vuetable.tableFields.filter((object) =>{
+      //   return object.name == "__slot:actions"
+      // })
+
+      // stuff[0].visible = false
     },
     renderIcon (classes, options) {
       return `<span class="${classes.join(' ')}"></span>`

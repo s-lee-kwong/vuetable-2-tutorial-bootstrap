@@ -78,8 +78,14 @@ export default function filter(query, data) {
   if (grouped) {
     sliced = _.compact(_.chain(sliced).groupBy("grouping").map((v, i) => {
           if (i != "undefined") {
+            let group = data.filter((row) => {
+              return row.groupData.id == v[0].groupId
+            } )[0]
+
             return {
               groupName: i,
+              groupData: group.groupData,
+              componentGroupName: group.componentGroupName,
               data: v
             }
           }

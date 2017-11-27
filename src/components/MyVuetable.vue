@@ -27,6 +27,7 @@ import FieldDef2 from './field-def-2.js'
 import BootstrapStyle from './bootstrap-css.js'
 import DetailRow from './DetailRow'
 import CustomActions from './CustomActions'
+import CustomGroup from './CustomGroup'
 import CustomTable from './CustomTable'
 import Data from './data.js'
 import GroupedData from './groupedData.js'
@@ -36,6 +37,7 @@ Object.defineProperty(Vue.prototype, '$lodash', { value: lodash });
 
 Vue.component('my-detail-row', DetailRow)
 Vue.component('custom-actions', CustomActions)
+Vue.component('custom-group', CustomGroup)
 
 export default {
   components: {
