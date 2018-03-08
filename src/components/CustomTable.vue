@@ -16,6 +16,7 @@
       @vuetable:cell-clicked="onCellClicked"
       @vuetable:pagination-data="onPaginationData"
       :grouped="dataGrouped"
+      :groupField="groupFieldDef"
     >
       <template slot="actions" slot-scope="props">
         <div class="custom-actions">
@@ -70,6 +71,9 @@ export default {
     FilterBar
   },
   props: {
+    groupFieldDef: {
+      type: Object
+    },
     passRef : {
       type: String,
       default: "vuetable"

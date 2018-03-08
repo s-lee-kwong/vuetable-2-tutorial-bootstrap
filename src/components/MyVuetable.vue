@@ -8,14 +8,20 @@
 
     <custom-table v-if='isGrouped' :pageAmount="pageAmount" :hasSearch="true"
           :hasPagination="true" :passedData="localGroupedData"
-          :fieldsDef="fields" :defaultSortOrder="sortOrder"
+          :fieldsDef="fields" :groupFieldDef="groupField" :defaultSortOrder="sortOrder"
           :css="css" :detailComponent="detailComponent" :dataGrouped="true">
     </custom-table>
 
-    <custom-table v-if='showBoth' passRef="custom-table-2" :pageAmount="pageAmount" :hasSearch="false"
+    <custom-table v-if='showBoth' :pageAmount="pageAmount" :hasSearch="false"
           :hasPagination="false" :passedData="localData"
           :fieldsDef="fields2" :defaultSortOrder="sortOrder2"
-          :css="css" :detailComponent="detailComponent">
+          :css="css" :detailComponent="detailComponent" ref="custom-table-2">
+    </custom-table>
+
+    <custom-table v-if='showBoth' passRef="custom-table-3" :pageAmount="pageAmount" :hasSearch="false"
+          :hasPagination="false" :passedData="localData"
+          :fieldsDef="fields2" :defaultSortOrder="sortOrder"
+          :css="css" :detailComponent="detailComponent" ref="custom-table-3">
     </custom-table>
   </div>
 </template>
@@ -24,6 +30,7 @@
 import Vue from 'vue'
 import FieldDef from './field-def.js'
 import FieldDef2 from './field-def-2.js'
+import GroupFieldDef from './groupFieldDef.js'
 import BootstrapStyle from './bootstrap-css.js'
 import DetailRow from './DetailRow'
 import CustomActions from './CustomActions'
@@ -51,6 +58,7 @@ export default {
       css: BootstrapStyle,
       fields: FieldDef,
       fields2: FieldDef2,
+      groupField: GroupFieldDef,
       isGrouped: true,
       sortOrder: [
         {
