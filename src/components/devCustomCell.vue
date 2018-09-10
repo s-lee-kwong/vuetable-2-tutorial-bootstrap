@@ -22,7 +22,7 @@
     },
     computed: {
       calculateStyle() {
-        return this.column.name === 'gender' ? {backgroundColor: 'red'} : undefined
+        return this.value === 'gender' ? {backgroundColor: 'red'} : undefined
       }
     },
     props: ['value', 'row'],
