@@ -204,7 +204,14 @@ export default {
       );
 
       return {
-        pagination: pagination,
+        pagination: {
+              total: this.filteredData.total,
+              per_page: this.pageAmount,
+              current_page: vuetableRef.currentPage,
+              last_page: Math.ceil(this.filteredData.total / this.pageAmount),
+              from: this.filteredData.from,
+              to: this.filteredData.to
+        },
         data: this.filteredData.rows
       }
 

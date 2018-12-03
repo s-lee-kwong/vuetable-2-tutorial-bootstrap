@@ -1,18 +1,18 @@
 <template>
   <div class="container">
-    <custom-table v-if="!isGrouped" :pageAmount="pageAmount" :hasSearch="true"
+    <!-- <custom-table v-if="!isGrouped" :pageAmount="pageAmount" :hasSearch="true"
           :hasPagination="true" :passedData="localData"
           :fieldsDef="fields" :defaultSortOrder="sortOrder"
           :css="css" :detailComponent="detailComponent">
-    </custom-table>
+    </custom-table> -->
 
-    <!-- <custom-table v-if='isGrouped' :pageAmount="pageAmount" :hasSearch="true"
+    <custom-table v-if='isGrouped' :pageAmount="pageAmount" :hasSearch="true"
           :hasPagination="true" :passedData="localGroupedData"
           :fieldsDef="fields" :groupFieldDef="groupField" :defaultSortOrder="sortOrder"
           :css="css" :detailComponent="detailComponent" :dataGrouped="true">
     </custom-table>
 
-    <custom-table v-if='showBoth' :pageAmount="pageAmount" :hasSearch="false"
+    <!-- <custom-table v-if='showBoth' :pageAmount="pageAmount" :hasSearch="false"
           :hasPagination="false" :passedData="localData"
           :fieldsDef="fields2" :defaultSortOrder="sortOrder2"
           :css="css" :detailComponent="detailComponent" ref="custom-table-2">
@@ -200,7 +200,7 @@ export default {
       fields: FieldDef,
       fields2: FieldDef2,
       groupField: GroupFieldDef,
-      isGrouped: false,
+      isGrouped: true,
       sortOrder: [
         {
           field: 'email',
