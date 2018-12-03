@@ -5111,11 +5111,12 @@ vue@>=2.0.0, vue@^2.5.2:
   version "2.5.17"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.17.tgz#0f8789ad718be68ca1872629832ed533589c6ada"
 
-vuetable-2@^2.0.0-beta.4:
+"vuetable-2@https://github.com/EDataNow/vuetable-2.git#next":
   version "2.0.0-beta.4"
-  resolved "https://registry.yarnpkg.com/vuetable-2/-/vuetable-2-2.0.0-beta.4.tgz#474a28dfbf9372e88b34b0659f4b524bc19aa676"
+  resolved "https://github.com/EDataNow/vuetable-2.git#72a18f0bfffb9de23ae522078f3f583a2911aff3"
   dependencies:
     axios "^0.15.3"
+    lodash "^4.17.5"
 
 vuex@^2.0.0:
   version "2.5.0"
