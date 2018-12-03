@@ -1,100 +1,12 @@
 <template>
   <div class="container">
-    <span>Total rows selected: {{ selection.length }}</span>
-
-    <div class="card">
-      <dx-grid
-          :rows="localData"
-          :columns="devColumns"
-        >
-          <dx-sorting-state
-            :sorting.sync="sorting"
-            :columnExtensions="sortingStateColumnExtensions"
-          />
-          <dx-grouping-state
-            :grouping.sync="grouping"
-            :expandedGroups.sync="expandedGroups"
-          />
-          <dx-integrated-sorting />
-          <dx-integrated-grouping/>
-          <dx-selection-state
-            :selection.sync="selection"
-          />
-          <dx-paging-state
-            :currentPage.sync="currentPage"
-            :pageSize="pageSize"
-          />
-
-          <dx-integrated-selection />
-          <dx-integrated-paging />
-          <dx-editing-state
-            v-on:commitChanges="commitChanges"
-            :addedRows.sync="addedRows"
-            :rowChanges.sync="rowChanges"
-            :deletedRowIds.sync="deletedRowIds"
-            :editingRowIds.sync="editingRowIds"
-          />
-          <dx-table
-            :columnExtensions="devColumnExtensions"
-            :cellComponent="$options.components.devCustomCell"
-          >
-          </dx-table>
-
-          <!-- <dx-table
-            :tableComponent="$options.components.devCustomTable"
-            :cellComponent="$options.components.devCustomCell"
-            :rowComponent="$options.components.devCustomRow"
-            :columnExtensions="devColumnExtensions"
-          >
-          </dx-table> -->
-          <dx-table-header-row
-            showSortingControls
-          />
-
-          <dx-table-edit-row />
-          <dx-table-edit-column
-            :headerCellComponent="$options.components.devCustomHeader"
-            :showAddCommand="!addedRows.length"
-            showEditCommand
-            showDeleteCommand
-          />
-          <dx-table-group-row
-            :rowComponent="$options.components.devCustomGroupRow"
-            :cellComponent="$options.components.devGroupCell"
-            :columnExtensions="devGroupExtensions"
-          />
-          <dx-toolbar />
-          <dx-grouping-panel
-            showSortingControls
-          />
-          <dx-table-selection
-            showSelectAll
-          />
-          <dx-paging-panel />
-        </dx-grid>
-      </div>
-    <!-- <v-client-table :data="localData" :columns="columns"
-                    :options="options" name="table1" ref="table1">
-      <div slot="beforeFilter">
-        <input @keyup="debounceFilter" v-model='query' />
-      </div>
-      <div class="right" slot="__group_meta" slot-scope="{value, data}">
-        <a href="http://www.google.ca"> HEY </a>
-      </div>
-      <div slot="filter__id">
-        <input type="checkbox" class="form-control" v-model="allMarked" @change="markAll">
-      </div>
-    </v-client-table>
-    <v-client-table :data="localData" :columns="columns"
-                :options="options" name="table2">
-    </v-client-table> -->
-    <!-- <custom-table v-if="!isGrouped" :pageAmount="pageAmount" :hasSearch="true"
+    <custom-table v-if="!isGrouped" :pageAmount="pageAmount" :hasSearch="true"
           :hasPagination="true" :passedData="localData"
           :fieldsDef="fields" :defaultSortOrder="sortOrder"
           :css="css" :detailComponent="detailComponent">
     </custom-table>
 
-    <custom-table v-if='isGrouped' :pageAmount="pageAmount" :hasSearch="true"
+    <!-- <custom-table v-if='isGrouped' :pageAmount="pageAmount" :hasSearch="true"
           :hasPagination="true" :passedData="localGroupedData"
           :fieldsDef="fields" :groupFieldDef="groupField" :defaultSortOrder="sortOrder"
           :css="css" :detailComponent="detailComponent" :dataGrouped="true">
@@ -168,7 +80,7 @@ import debounce from 'debounce'
 Object.defineProperty(Vue.prototype, '$lodash', { value: lodash });
 
 Vue.component('my-detail-row', DetailRow)
-Vue.component('custom-actions', CustomActions)
+Vue.component('vuetable-field-custom-actions', CustomActions)
 Vue.component('custom-actions-vue-tables-2', CustomActionsVueTables2)
 Vue.component('custom-group', CustomGroup)
 Vue.use(ClientTable, {}, false, customTheme, customTemplate);
@@ -176,6 +88,7 @@ Vue.use(ServerTable, {}, false, 'bootstrap4');
 
 export default {
   components: {
+    CustomActions,
     CustomTable,
     DxGrid,
     DxTable,
@@ -287,7 +200,7 @@ export default {
       fields: FieldDef,
       fields2: FieldDef2,
       groupField: GroupFieldDef,
-      isGrouped: true,
+      isGrouped: false,
       sortOrder: [
         {
           field: 'email',

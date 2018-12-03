@@ -5,6 +5,7 @@
       :fields="fieldsDef"
       :css="css"
       pagination-path=""
+      :data-manager="dataManager"
       :per-page="getPageAmount"
       :multi-sort="multiSort"
       multi-sort-key="shift"
@@ -15,6 +16,7 @@
       @vuetable:loaded="loaded"
       @vuetable:cell-clicked="onCellClicked"
       @vuetable:pagination-data="onPaginationData"
+      :api-mode="false"
       :grouped="dataGrouped"
       :groupField="groupFieldDef"
     >
@@ -172,6 +174,44 @@ export default {
       // })
 
       // stuff[0].visible = false
+    },
+    dataManager(sortOrder, pagination) {
+      let vuetableRef = this.$refs[this.passRef]
+
+      let queryParams = vuetableRef.getAllQueryParams()
+
+      queryParams.filter = this.moreParams.filter
+      queryParams.grouped = this.dataGrouped
+
+      console.log(sortOrder)
+      console.log(queryParams)
+
+      this.filteredData = filter(queryParams, this.localData)
+
+      // vuetableRef.tablePagination = {
+      //       total: this.filteredData.total,
+      //       per_page: this.pageAmount,
+      //       current_page: vuetableRef.currentPage,
+      //       last_page: Math.ceil(this.filteredData.total / this.pageAmount),
+      //       from: this.filteredData.from,
+      //       to: this.filteredData.to
+      // }
+
+      // vuetableRef.fireEvent('pagination-data', vuetableRef.tablePagination)
+
+      return {
+        pagination: {
+              total: this.filteredData.total,
+              per_page: this.pageAmount,
+              current_page: vuetableRef.currentPage,
+              last_page: Math.ceil(this.filteredData.total / this.pageAmount),
+              from: this.filteredData.from,
+              to: this.filteredData.to
+        },
+        data: this.filteredData.rows
+      }
+
+      // vuetableRef.tableData = this.filteredData.rows
     },
     renderIcon (classes, options) {
       return `<span class="${classes.join(' ')}"></span>`

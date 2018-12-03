@@ -15,7 +15,7 @@ const purify = o => JSON.parse(JSON.stringify(o)) // purify data
  */
 export default function filter(query, data, searchKeys=[]) {
   query = purify(query)
-  var { per_page = 10, page = 0, sort = '', order = '', grouped = false } = query
+  let { per_page = 10, page = 0, sort = '', order = '', grouped = false } = query
 
   let sorts = query["sort"].split(",")
   let allSorts = []

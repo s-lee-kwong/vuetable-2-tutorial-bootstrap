@@ -1,9 +1,12 @@
+import VuetableFieldHandle from 'vuetable-2/src/components/VuetableFieldHandle.vue'
+import VuetableFieldCheckbox from 'vuetable-2/src/components/VuetableFieldCheckbox.vue'
+
 export default [
-  '__handle',
   {
-    name: '__checkbox',
-    titleClass: 'text-center',
-    dataClass: 'text-center',
+    name: VuetableFieldHandle
+  },
+  {
+    name: VuetableFieldCheckbox
   },
   {
     name: 'name',
@@ -52,15 +55,9 @@ export default [
     callback: 'formatNumber',
   },
   {
-    name: '__component:custom-actions',
-    title: 'Actions',
-    titleClass: 'text-center',
-    dataClass: 'text-center'
+    name: '__custom-actions',
   },
   {
-    name: '__slot:actions',
-    title: 'Slot Actions',
-    titleClass: 'text-center',
-    dataClass: 'text-center'
+    name: 'actions',
   },
 ]
