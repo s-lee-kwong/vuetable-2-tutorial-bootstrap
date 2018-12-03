@@ -175,6 +175,7 @@ export default {
       // stuff[0].visible = false
     },
     dataManager(sortOrder, pagination) {
+      console.log(this.$refs)
       let vuetableRef = this.$refs[this.passRef]
 
       let queryParams = vuetableRef.getAllQueryParams()
@@ -195,7 +196,7 @@ export default {
 
       // vuetableRef.fireEvent('pagination-data', vuetableRef.tablePagination)
 
-      pagination = this.$refs.vuetable.makePagination(
+      pagination = vuetableRef.makePagination(
         this.localData.length,
         this.pageAmount
       );
@@ -240,10 +241,10 @@ export default {
       }
     },
     onChangePage (page) {
-      this.$refs.vuetable.changePage(page)
+      this.$refs[this.passRef].changePage(page)
     },
     onCellClicked (data, field, event) {
-      this.$refs.vuetable.toggleDetailRow(data.id)
+      this.$refs[this.passRef].toggleDetailRow(data.id)
     },
     onAction (action, data, index) {
       console.log('slot-actions: ' + action, data.name, index)

@@ -1,16 +1,16 @@
 <template>
   <div class="container">
-    <custom-table v-if="!isGrouped" :pageAmount="pageAmount" :hasSearch="true"
-          :hasPagination="true" :passedData="localData"
+    <custom-table :pageAmount="pageAmount" :hasSearch="true"
+          :hasPagination="true" :passedData="localData" ref="test"
           :fieldsDef="fields" :defaultSortOrder="sortOrder"
           :css="css" :detailComponent="detailComponent">
     </custom-table>
 
-    <!-- <custom-table v-if='isGrouped' :pageAmount="pageAmount" :hasSearch="true"
-          :hasPagination="true" :passedData="localGroupedData"
-          :fieldsDef="fields" :groupFieldDef="groupField" :defaultSortOrder="sortOrder"
+    <custom-table :pageAmount="pageAmount" :hasSearch="true" ref="grouped-test"
+          :hasPagination="true" :passedData="localGroupedData" passRef="grouped-test"
+          :fieldsDef="fields" :groupFieldDef="groupField" :defaultSortOrder="sortOrder2"
           :css="css" :detailComponent="detailComponent" :dataGrouped="true">
-    </custom-table> -->
+    </custom-table>
 
     <!-- <custom-table v-if='showBoth' :pageAmount="pageAmount" :hasSearch="false"
           :hasPagination="false" :passedData="localData"
@@ -195,7 +195,7 @@ export default {
       },
       columns: ['id', 'name', 'email', 'age', 'birthdate',
                 'nickname', 'salary', 'actions', 'slot-actions'],
-      showBoth: false,
+      showBoth: true,
       css: BootstrapStyle,
       fields: FieldDef,
       fields2: FieldDef2,
