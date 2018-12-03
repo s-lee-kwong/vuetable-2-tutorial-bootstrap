@@ -182,9 +182,6 @@ export default {
       queryParams.filter = this.moreParams.filter
       queryParams.grouped = this.dataGrouped
 
-      console.log(sortOrder)
-      console.log(queryParams)
-
       this.filteredData = filter(queryParams, this.localData)
 
       // vuetableRef.tablePagination = {
