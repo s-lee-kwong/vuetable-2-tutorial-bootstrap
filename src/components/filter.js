@@ -1,9 +1,6 @@
 import moment from 'moment'
-import uniq from 'lodash/uniq'
 import orderBy from 'lodash/orderBy'
-import groupBy from 'lodash/groupBy'
 import flattenDeep from 'lodash/flattenDeep'
-import map from 'lodash/map'
 
 const typeOf = o => Object.prototype.toString.call(o).slice(8, -1).toLowerCase()
 const purify = o => JSON.parse(JSON.stringify(o)) // purify data
@@ -13,7 +10,7 @@ const purify = o => JSON.parse(JSON.stringify(o)) // purify data
  * @param   {Object} query
  * @resolve {Object}
  */
-export default function filter(query, data, searchKeys=[]) {
+export default function filter(query, data, searchKeys = []) {
   query = purify(query)
   let { per_page = 10, page = 0, sort = '', order = '', grouped = false } = query
 
@@ -46,6 +43,9 @@ export default function filter(query, data, searchKeys=[]) {
       searchKeys = Object.keys(rows[0])
     }
 
+    let searchCount = 0
+    let total = searchKeys.length
+
     searchKeys.forEach(field => {
       if (filteredAlready == false) {
         switch (typeOf(query.filter)) {
@@ -53,14 +53,23 @@ export default function filter(query, data, searchKeys=[]) {
             filtered = rows.filter(row => query.filter.indexOf(row[field]) > -1)
             break
           case 'string':
-            filtered = rows.filter(row => row[field].toString().toLowerCase().indexOf(query.filter.toLowerCase()) > -1)
+            filtered = rows.filter(row => {
+              if (row[field]) {
+                return row[field].toString().toLowerCase().indexOf(query.filter.toLowerCase()) > -1
+              }
+
+              return false
+            })
+
             break
           default:
             // nothing to do
             break
         }
 
-        if (filtered.length > 0 || query.filter !== undefined) {
+        searchCount += 1
+
+        if (filtered.length > 0 || (query.filter !== undefined && searchCount == total)) {
           rows = filtered
 
           filteredAlready = true
@@ -83,25 +92,25 @@ export default function filter(query, data, searchKeys=[]) {
   }
 
   if (grouped) {
-    sliced = _.compact(_.chain(sliced).groupBy("grouping").map((v, i) => {
-          if (i != "undefined") {
-            let dataReturned = {
-              groupName: i,
-              data: v
-            }
+    sliced = _.orderBy(_.compact(_.chain(sliced).groupBy("grouping").map((v, i) => {
+      if (i != "undefined") {
+        let dataReturned = {
+          groupName: i,
+          data: v
+        }
 
-            if(v[0].groupId != undefined) {
-              let group = data.filter((row) => {
-                return row.groupData.id == v[0].groupId
-              } )[0]
+        if (v[0].groupId != undefined) {
+          let group = data.filter((row) => {
+            return row.groupData.id == v[0].groupId
+          })[0]
 
-              dataReturned.groupData = group.groupData
-              dataReturned.componentGroupName = group.componentGroupName
-            }
+          dataReturned.groupData = group.groupData
+          dataReturned.componentGroupName = group.componentGroupName
+        }
 
-            return dataReturned
-          }
-        }).value())
+        return dataReturned
+      }
+    }).value()), ['groupName'], ['asc'])
   }
 
   const res = {
@@ -111,13 +120,13 @@ export default function filter(query, data, searchKeys=[]) {
     total: rows.length
   }
 
-  const consoleGroupName = 'Mock data - ' + moment().format('YYYY-MM-DD HH:mm:ss')
-  setTimeout(() => {
-    console.group(consoleGroupName)
-    console.info('Receive:', query)
-    console.info('Respond:', res)
-    console.groupEnd(consoleGroupName)
-  }, 0)
+  // const consoleGroupName = 'Mock data - ' + moment().format('YYYY-MM-DD HH:mm:ss')
+  // setTimeout(() => {
+  //   console.group(consoleGroupName)
+  //   console.info('Receive:', query)
+  //   console.info('Respond:', res)
+  //   console.groupEnd(consoleGroupName)
+  // }, 0)
   // return Promise.resolve(data)
   return res
 }

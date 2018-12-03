@@ -4,7 +4,7 @@
     <vuetable :ref="passRef"
       :fields="fieldsDef"
       :css="css"
-      pagination-path=""
+      pagination-path="pagination"
       :data-manager="dataManager"
       :per-page="getPageAmount"
       :multi-sort="multiSort"
@@ -13,7 +13,6 @@
       :detail-row-component="detailComponent"
       :append-params="moreParams"
       :render-icon="renderIcon"
-      @vuetable:loaded="loaded"
       @vuetable:cell-clicked="onCellClicked"
       @vuetable:pagination-data="onPaginationData"
       :api-mode="false"
@@ -126,7 +125,7 @@ export default {
       slotShown: true
     }
   },
-  mounted () {
+  created () {
     this.localData = this.passedData
 
     if (this.hasSearch) {
@@ -145,29 +144,29 @@ export default {
   },
   methods: {
     loaded () {
-      let vuetableRef = this.$refs[this.passRef]
+      // let vuetableRef = this.$refs[this.passRef]
 
-      let queryParams = vuetableRef.getAllQueryParams()
+      // let queryParams = vuetableRef.getAllQueryParams()
 
-      queryParams.filter = this.moreParams.filter
-      queryParams.grouped = this.dataGrouped
+      // queryParams.filter = this.moreParams.filter
+      // queryParams.grouped = this.dataGrouped
 
-      let primeQuery = queryParams["sort"].split("|")[0]
+      // let primeQuery = queryParams["sort"].split("|")[0]
 
-      this.filteredData = filter(queryParams, this.localData)
+      // this.filteredData = filter(queryParams, this.localData)
 
-      vuetableRef.tablePagination = {
-            total: this.filteredData.total,
-            per_page: this.pageAmount,
-            current_page: vuetableRef.currentPage,
-            last_page: Math.ceil(this.filteredData.total / this.pageAmount),
-            from: this.filteredData.from,
-            to: this.filteredData.to
-      }
+      // vuetableRef.tablePagination = {
+      //       total: this.filteredData.total,
+      //       per_page: this.pageAmount,
+      //       current_page: vuetableRef.currentPage,
+      //       last_page: Math.ceil(this.filteredData.total / this.pageAmount),
+      //       from: this.filteredData.from,
+      //       to: this.filteredData.to
+      // }
 
-      vuetableRef.fireEvent('pagination-data', vuetableRef.tablePagination)
+      // vuetableRef.fireEvent('pagination-data', vuetableRef.tablePagination)
 
-      vuetableRef.tableData = this.filteredData.rows
+      // vuetableRef.tableData = this.filteredData.rows
 
       // var stuff = this.$refs.vuetable.tableFields.filter((object) =>{
       //   return object.name == "__slot:actions"
@@ -199,15 +198,13 @@ export default {
 
       // vuetableRef.fireEvent('pagination-data', vuetableRef.tablePagination)
 
+      pagination = this.$refs.vuetable.makePagination(
+        this.localData.length,
+        this.pageAmount
+      );
+
       return {
-        pagination: {
-              total: this.filteredData.total,
-              per_page: this.pageAmount,
-              current_page: vuetableRef.currentPage,
-              last_page: Math.ceil(this.filteredData.total / this.pageAmount),
-              from: this.filteredData.from,
-              to: this.filteredData.to
-        },
+        pagination: pagination,
         data: this.filteredData.rows
       }
 
@@ -248,17 +245,20 @@ export default {
       console.log('slot-actions: ' + action, data.name, index)
     },
     onFilterSet (filterText) {
+      let vuetableRef = this.$refs[this.passRef]
+
       this.moreParams = {
         'filter': filterText
       }
 
-      this.loaded()
+      vuetableRef.callDataManager()
     },
     onFilterReset () {
-      this.moreParams = {}
-      this.$refs.vuetable.refresh()
+      let vuetableRef = this.$refs[this.passRef]
 
-      this.loaded()
+      this.moreParams = {}
+      vuetableRef.refresh()
+      vuetableRef.callDataManager()
     }
   },
 }
